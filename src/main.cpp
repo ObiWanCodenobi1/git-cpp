@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
         }
         std::string blob_sha = argv[3];
 
-        std::filesystem::path file_path = ".git/objects" + blob_sha.substr(0,2) + "/" + blob_sha.substr(2);
+        std::filesystem::path file_path = "./.git/objects" + blob_sha.substr(0,2) + "/" + blob_sha.substr(2);
 
         if (!exists(file_path)) {
             std::cerr << "Object not found.\n";
