@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 #include <zlib.h>
-#include<vector>>
+#include<vector>
 
 #define CHUNK 16384
 
