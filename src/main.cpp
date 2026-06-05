@@ -2,6 +2,42 @@
 #include <filesystem>
 #include <fstream>
 #include <string>
+#include <zlib.h>
+#include<vector>>
+
+#define CHUNK 16384
+
+std::string decompress(std::string& compressed){
+    z_stream zs{};
+    if (inflateInit(&zs) != Z_OK) {
+        throw std::runtime_error("inflateInit failed");
+    }
+
+    zs.next_in = reinterpret_cast<Bytef *>(const_cast<char *>(compressed.data()));
+    zs.avail_in = static_cast<uInt>(compressed.size());
+
+    std::string out;
+    std::vector<char> buffer(32768);
+
+    int ret;
+    do {
+        zs.next_out = reinterpret_cast<Bytef *>(buffer.data());
+        zs.avail_out = static_cast<uInt>(buffer.size());
+
+        ret = inflate(&zs, 0);
+        if (ret != Z_OK && ret != Z_STREAM_END) {
+        inflateEnd(&zs);
+        throw std::runtime_error("inflate failed");
+        }
+
+        out.append(buffer.data(), buffer.size() - zs.avail_out);
+    } while (ret != Z_STREAM_END);
+
+    inflateEnd(&zs);
+    return out;
+
+        
+}
 
 int main(int argc, char *argv[])
 {
@@ -41,7 +77,38 @@ int main(int argc, char *argv[])
             std::cerr << e.what() << '\n';
             return EXIT_FAILURE;
         }
-    } else {
+    }
+    else if(command=="cat-file"){
+        std::string mode = argv[2];
+        if (mode != "-p") {
+            std::cerr << mode << '\n';
+            return EXIT_FAILURE;
+        }
+        std::string blob_sha = argv[3];
+
+        std::filesystem::path file_path = ".git/objects" + blob_sha.substr(0,2) + "/" + blob_sha(2);
+
+        if (!exists(file_path)) {
+            std::cerr << "Object not found.\n";
+            return EXIT_FAILURE;
+        }
+
+        std::ifstream catfile(file_path);
+        std::string compressed="",line;
+
+        while(getline(catfile,line)){
+            compressed += line;
+        }
+
+        catfile.close();
+
+        std::string decompressed = decompress(compressed);
+
+        int idx = decompressed.find('\0');
+        std::cout << decompressed.substr(idx+1);
+
+    }
+    else {
         std::cerr << "Unknown command " << command << '\n';
         return EXIT_FAILURE;
     }
