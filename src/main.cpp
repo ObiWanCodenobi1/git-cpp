@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
         std::string file_path = "./" + file;
 
         std::FILE *input_file;
-        input_file = fopen(file_path.c_str(), "rb");
+        input_file = fopen(file_path.c_str(), "r");
 
         if(input_file==NULL){
             std::cerr<<"Could not open file";
@@ -194,7 +194,6 @@ int main(int argc, char *argv[])
         unsigned char out[20];
 
         SHA1(in, sizeof(in)-1, out);
-        std::cout << out << "\n";
         char out_string[41];
         for(int i = 0; i < 41; ++i){  
             sprintf(&out_string[i*2], "%02x", (unsigned int)out[i]);  
