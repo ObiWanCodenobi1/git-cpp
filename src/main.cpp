@@ -40,7 +40,7 @@ std::string decompress(std::string& compressed){
     return out;        
 }
 
-int def(FILE *source, FILE *dest){
+int def(FILE *source, FILE *dest, int level){
     int ret, flush;
     unsigned have;
     z_stream strm;
@@ -197,7 +197,7 @@ int main(int argc, char *argv[])
             return EXIT_FAILURE;
            }
 
-           def(input_file,output_file);
+           def(input_file,output_file,-1);
            fclose(output_file);
         }
 
