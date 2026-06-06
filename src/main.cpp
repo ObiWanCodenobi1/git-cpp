@@ -193,10 +193,14 @@ int main(int argc, char *argv[])
         std::cout << "\n";
         unsigned char out[40];
 
-        SHA1(in, sizeof(in), out);
+        SHA1(in, sizeof(in)-1, out);
         std::cout << out << "\n";
-        std::string hash(reinterpret_cast<char*>(out));
-        std::cout<<hash;
+        char hash[81];
+        for(int i = 0; i < 81; ++i){  
+            sprintf(&hash[i*2], "%02x", (unsigned int)out[i]);  
+        }
+
+        std::cout << hash << "\n";
 
         if(mode=="-w"){
            std::filesystem::create_directory("./.git/objects" + hash.substr(0,2));
