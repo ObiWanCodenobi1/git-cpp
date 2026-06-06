@@ -182,6 +182,7 @@ int main(int argc, char *argv[])
         SHA1(reinterpret_cast<const unsigned char*>(contents.data()), contents.size(), out);
 
         std::string hash(reinterpret_cast<char*>(out));
+        std::cout<<"gay";
         std::cout<<hash;
 
         if(mode=="-w"){
@@ -192,10 +193,10 @@ int main(int argc, char *argv[])
 
            output_file = fopen(output_path.c_str(),"w");
 
-        //    if(output_file == NULL){
-        //     std::cerr<<"Could not create file";
-        //     return EXIT_FAILURE;
-        //    }
+           if(output_file == NULL){
+            std::cerr<<"Could not create file";
+            return EXIT_FAILURE;
+           }
 
            def(input_file,output_file,-1);
            fclose(output_file);
