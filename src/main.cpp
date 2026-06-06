@@ -4,6 +4,9 @@
 #include <string>
 #include <zlib.h>
 #include<vector>
+#include <openssl/sha.h>
+#include <stdio.h>
+#include <cassert>
 
 #define CHUNK 16384
 
@@ -34,9 +37,48 @@ std::string decompress(std::string& compressed){
     } while (ret != Z_STREAM_END);
 
     inflateEnd(&zs);
-    return out;
+    return out;        
+}
 
-        
+int def(FILE *source, FILE *dest, int level){
+    int ret, flush;
+    unsigned have;
+    z_stream strm;
+    unsigned char in[CHUNK];
+    unsigned char out[CHUNK];
+
+    /* allocate deflate state */
+    strm.zalloc = Z_NULL;
+    strm.zfree = Z_NULL;
+    strm.opaque = Z_NULL;
+    ret = deflateInit(&strm, level);
+    if (ret != Z_OK) return ret;
+
+    do{
+        strm.avail_in = fread(in, 1, CHUNK, source);
+        if (ferror(source)) {
+            (void)deflateEnd(&strm);
+            return Z_ERRNO;
+        }
+        flush = feof(source) ? Z_FINISH : Z_NO_FLUSH;
+        strm.next_in = in;
+        do{
+            strm.avail_out = CHUNK;
+            strm.next_out = out;
+            ret = deflate(&strm, flush);    /* no bad return value */
+            assert(ret != Z_STREAM_ERROR);  /* state not clobbered */
+            have = CHUNK - strm.avail_out;
+            if (fwrite(out, 1, have, dest) != have || ferror(dest)) {
+                (void)deflateEnd(&strm);
+                return Z_ERRNO;
+            }
+        }while (strm.avail_out == 0);
+        assert(strm.avail_in == 0);
+
+    }while (flush != Z_FINISH);
+    assert(ret == Z_STREAM_END);
+    (void)deflateEnd(&strm);
+    return Z_OK;
 }
 
 int main(int argc, char *argv[])
@@ -107,6 +149,64 @@ int main(int argc, char *argv[])
         int idx = decompressed.find('\0');
         std::cout << decompressed.substr(idx+1);
 
+    }
+    else if(command=="hash-object"){
+        std::string mode = argv[2];
+        std::string file;
+
+        if(mode=="-w"){
+            file = argv[3];
+        }
+        else file = mode;
+        
+        std::filesystem::path file_path = "./" + file;
+
+        if(!exists(file_path)){
+            std::cerr << "Object not found.\n";
+            return EXIT_FAILURE;
+        }
+
+        std::FILE *input_file;
+        input_file = fopen(file_path, "r");
+
+        if(input_file==NULL){
+            std::cerr<<"Could not open file";
+            return EXIT_FAILURE;
+        }
+        
+        char ch;
+        std::string contents;
+        while ((ch = fgetc(input_file)) != EOF){
+            contents += ch;
+        }
+
+        contents = "blob " + std::to_string(contents.size()) + '\0' + contents;
+
+        unsigned char out[40];
+
+        SHA1(reinterpret_cast<const unsigned char*>(contents.data()), contents.size(), out);
+
+        std::string hash(reinterpret_cast<char*>(out));
+        std::cout<<hash;
+
+        if(mode=="-w"){
+           std::filesystem::create_directory("./.git/objects" + hash.substr(0,2));
+
+           std::FILE* output_file;
+           std::filesystem::path output_path = "./.git/objects/" + hash.substr(0,2) + "/" + hash.substr(2);
+
+           output_file = fopen(output_path,"w");
+
+           if(output_file == NULL){
+            std::cerr<<"Could not create file";
+            return EXIT_FAILURE;
+           }
+
+           def(input_file,output_file);
+           fclose(output_file);
+        }
+
+        fclose(input_file);
     }
     else {
         std::cerr << "Unknown command " << command << '\n';
