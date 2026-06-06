@@ -40,7 +40,7 @@ std::string decompress(std::string& compressed){
     return out;        
 }
 
-int def(FILE *source, FILE *dest, int level){
+int def(FILE *source, FILE *dest){
     int ret, flush;
     unsigned have;
     z_stream strm;
