@@ -188,7 +188,6 @@ int main(int argc, char *argv[])
             idx++;
         }
 
-        std::cout << contents << "\n";
         for(int i = 0; i < 6+(std::to_string(contents.size())).size()+contents.size() ; i++) std::cout << in[i];
         std::cout << "\n";
         unsigned char out[20];
