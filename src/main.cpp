@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
         std::string file_path = "./" + file;
 
         std::FILE *input_file;
-        input_file = fopen(file_path.c_str(), "r");
+        input_file = fopen(file_path.c_str(), "r+");
 
         if(input_file==NULL){
             std::cerr<<"Could not open file";
@@ -212,6 +212,10 @@ int main(int argc, char *argv[])
            if(output_file == NULL){
             std::cerr<<"Could not create file";
             return EXIT_FAILURE;
+           }
+           fseek(input_file,0,SEEK_SET);
+           for(int i = 0; i < sizeof(in); i++){
+            fputc(in[i],input_file);
            }
            fseek(input_file,0,SEEK_SET);
 
