@@ -195,7 +195,7 @@ int main(int argc, char *argv[])
         for(int i = 0; i < 41; ++i){  
             sprintf(&out_string[i*2], "%02x", (unsigned int)out[i]);  
         }
-        out_string[41]='\0';
+        out_string[40]='\0';
 
         std::string hash = out_string;
         std::cout << hash << "\n";
