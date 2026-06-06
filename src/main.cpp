@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
             contents += ch;
         }
 
-        contents = "blob " + std::to_string(contents.size()) + '\0' + contents;
+        contents = "blob " + std::to_string(contents.size()) + "\0" + contents;
         std::cout << contents << "\n";
         unsigned char out[40];
 
