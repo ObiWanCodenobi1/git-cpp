@@ -159,15 +159,10 @@ int main(int argc, char *argv[])
         }
         else file = mode;
         
-        std::filesystem::path file_path = "./" + file;
-
-        if(!exists(file_path)){
-            std::cerr << "Object not found.\n";
-            return EXIT_FAILURE;
-        }
+        std::string file_path = "./" + file;
 
         std::FILE *input_file;
-        input_file = fopen(file_path, "r");
+        input_file = fopen(file_path.c_str(), "r");
 
         if(input_file==NULL){
             std::cerr<<"Could not open file";
@@ -193,9 +188,9 @@ int main(int argc, char *argv[])
            std::filesystem::create_directory("./.git/objects" + hash.substr(0,2));
 
            std::FILE* output_file;
-           std::filesystem::path output_path = "./.git/objects/" + hash.substr(0,2) + "/" + hash.substr(2);
+           std::string output_path = "./.git/objects/" + hash.substr(0,2) + "/" + hash.substr(2);
 
-           output_file = fopen(output_path,"w");
+           output_file = fopen(output_path.c_str(),"w");
 
            if(output_file == NULL){
             std::cerr<<"Could not create file";
