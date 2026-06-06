@@ -189,7 +189,7 @@ int main(int argc, char *argv[])
         }
 
         std::cout << contents << "\n";
-        for(int i = 0; i < contents.size(); i++) std::cout << contents[i];
+        for(int i = 0; i < in.size(); i++) std::cout << in[i];
         std::cout << "\n";
         unsigned char out[40];
 
