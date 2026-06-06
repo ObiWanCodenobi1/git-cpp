@@ -200,7 +200,9 @@ int main(int argc, char *argv[])
             sprintf(&hash[i*2], "%02x", (unsigned int)out[i]);  
         }
 
+        std:: string str(hash);
         std::cout << hash << "\n";
+         
 
         if(mode=="-w"){
            std::filesystem::create_directory("./.git/objects" + hash.substr(0,2));
