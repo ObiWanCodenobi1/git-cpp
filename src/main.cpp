@@ -176,7 +176,7 @@ int main(int argc, char *argv[])
             contents += ch;
         }
 
-        unsigned char in[4+(std::to_string(contents.size())).size()+contents.size()] = {};
+        unsigned char in[6+(std::to_string(contents.size())).size()+contents.size()] = {};
         std::string header = "blob " + std::to_string(contents.size());
         std::memcpy(in, header.c_str(), header.size());
         int idx = header.size();
@@ -189,7 +189,7 @@ int main(int argc, char *argv[])
         }
 
         std::cout << contents << "\n";
-        for(int i = 0; i < 4+(std::to_string(contents.size())).size()+contents.size() ; i++) std::cout << in[i];
+        for(int i = 0; i < 6+(std::to_string(contents.size())).size()+contents.size() ; i++) std::cout << in[i];
         std::cout << "\n";
         unsigned char out[40];
 
