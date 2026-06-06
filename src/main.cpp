@@ -192,10 +192,10 @@ int main(int argc, char *argv[])
 
            output_file = fopen(output_path.c_str(),"w");
 
-           if(output_file == NULL){
-            std::cerr<<"Could not create file";
-            return EXIT_FAILURE;
-           }
+        //    if(output_file == NULL){
+        //     std::cerr<<"Could not create file";
+        //     return EXIT_FAILURE;
+        //    }
 
            def(input_file,output_file,-1);
            fclose(output_file);
