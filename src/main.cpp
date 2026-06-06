@@ -189,7 +189,8 @@ int main(int argc, char *argv[])
         }
 
         std::cout << contents << "\n";
-        std::cout << in << "\n";
+        for(int i = 0; i < contents.size(); i++) std::cout << contents[i];
+        std::cout << "\n";
         unsigned char out[40];
 
         SHA1(in, sizeof(in)-1, out);
