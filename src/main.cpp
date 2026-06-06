@@ -193,7 +193,7 @@ int main(int argc, char *argv[])
         std::cout << "\n";
         unsigned char out[20];
 
-        SHA1(in, sizeof(in)-1, out);
+        SHA1(in, sizeof(in), out);
         char out_string[41];
         for(int i = 0; i < 41; ++i){  
             sprintf(&out_string[i*2], "%02x", (unsigned int)out[i]);  
