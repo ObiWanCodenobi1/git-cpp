@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <fstream>
 #include <string>
+#include <cstring>
 #include <zlib.h>
 #include<vector>
 #include <openssl/sha.h>
@@ -175,15 +176,11 @@ int main(int argc, char *argv[])
             contents += ch;
         }
 
-        unsigned char in[4+(std::to_string(contents.size())).size()+contents.size()] = "blob ";
-        std::cout << 6+(std::to_string(contents.size())).size()+contents.size()<<"\n";
-        int idx = 5;
-        for(int i = 0; i < (std::to_string(contents.size())).size();i++){
-            in[idx] = std::to_string(contents.size())[i];
-            idx++;
-        }
-
-        in[idx] = "\0";
+        unsigned char in[4+(std::to_string(contents.size())).size()+contents.size()] = {};
+        std::string header = "blob " + std::to_string(contents.size());
+        std::memcpy(in, header.c_str(), header.size());
+        int idx = header.size();
+        in[idx] = '\0';
         idx++;
 
         for(int i = 0; i < contents.size(); i++){
