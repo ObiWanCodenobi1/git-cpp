@@ -195,12 +195,12 @@ int main(int argc, char *argv[])
 
         SHA1(in, sizeof(in)-1, out);
         std::cout << out << "\n";
-        char hash[81];
+        char out_string[81];
         for(int i = 0; i < 81; ++i){  
-            sprintf(&hash[i*2], "%02x", (unsigned int)out[i]);  
+            sprintf(&out_string[i*2], "%02x", (unsigned int)out[i]);  
         }
 
-        std:: string str(hash);
+        std::string hash = out_string;
         std::cout << hash << "\n";
          
 
