@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
         unsigned char out[40];
 
         SHA1(reinterpret_cast<const unsigned char*>(contents.data()), contents.size(), out);
-
+        std::cout << out << "\n";
         std::string hash(reinterpret_cast<char*>(out));
         std::cout<<hash;
 
