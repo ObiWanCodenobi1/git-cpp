@@ -176,6 +176,7 @@ int main(int argc, char *argv[])
         }
 
         unsigned char in[6+(std::to_string(contents.size())).size()+contents.size()] = "blob ";
+        std::cout << 6+(std::to_string(contents.size())).size()+contents.size()<<"\n";
         int idx = 5;
         for(int i = 0; i < (std::to_string(contents.size())).size();i++){
             in[idx] = std::to_string(contents.size())[i];
