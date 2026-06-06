@@ -193,7 +193,7 @@ int main(int argc, char *argv[])
         std::cout << "\n";
         unsigned char out[40];
 
-        SHA1(in, sizeof(in)-1, out);
+        SHA1(in, sizeof(in), out);
         std::cout << out << "\n";
         std::string hash(reinterpret_cast<char*>(out));
         std::cout<<hash;
