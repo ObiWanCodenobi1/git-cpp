@@ -183,7 +183,7 @@ int main(int argc, char *argv[])
             idx++;
         }
 
-        in[idx] = '\0';
+        in[idx] = "\0";
         idx++;
 
         for(int i = 0; i < contents.size(); i++){
