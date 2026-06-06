@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
         std::string file_path = "./" + file;
 
         std::FILE *input_file;
-        input_file = fopen(file_path.c_str(), "r");
+        input_file = fopen(file_path.c_str(), "rb");
 
         if(input_file==NULL){
             std::cerr<<"Could not open file";
@@ -199,13 +199,14 @@ int main(int argc, char *argv[])
         for(int i = 0; i < 41; ++i){  
             sprintf(&out_string[i*2], "%02x", (unsigned int)out[i]);  
         }
+        out_string[41]='\0';
 
         std::string hash = out_string;
         std::cout << hash << "\n";
          
 
         if(mode=="-w"){
-           std::filesystem::create_directory("./.git/objects" + hash.substr(0,2));
+           std::filesystem::create_directory("./.git/objects/" + hash.substr(0,2));
 
            std::FILE* output_file;
            std::string output_path = "./.git/objects/" + hash.substr(0,2) + "/" + hash.substr(2);
@@ -216,6 +217,7 @@ int main(int argc, char *argv[])
             std::cerr<<"Could not create file";
             return EXIT_FAILURE;
            }
+           fseek(input_file,0,SEEK_SET);
 
            def(input_file,output_file,-1);
            fclose(output_file);
