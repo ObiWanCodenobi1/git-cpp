@@ -176,13 +176,12 @@ int main(int argc, char *argv[])
         }
 
         contents = "blob " + std::to_string(contents.size()) + '\0' + contents;
-
+        std::cout << contents << "\n";
         unsigned char out[40];
 
         SHA1(reinterpret_cast<const unsigned char*>(contents.data()), contents.size(), out);
 
         std::string hash(reinterpret_cast<char*>(out));
-        std::cout<<"gay";
         std::cout<<hash;
 
         if(mode=="-w"){
