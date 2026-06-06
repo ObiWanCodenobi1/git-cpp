@@ -175,11 +175,25 @@ int main(int argc, char *argv[])
             contents += ch;
         }
 
-        contents = "blob " + std::to_string(contents.size()) + "\0" + contents;
+        unsigned char in[6+(std::to_string(contents.size())).size()+contents.size()] = "blob ";
+        int idx = 5;
+        for(int i = 0; i < (std::to_string(contents.size())).size();i++){
+            in[idx] = std::to_string(contents.size())[i];
+            idx++;
+        }
+
+        in[idx] = '\0';
+        idx++;
+
+        for(int i = 0; i < contents.size(); i++){
+            in[idx] = contents[i];
+            idx++;
+        }
+
         std::cout << contents << "\n";
         unsigned char out[40];
 
-        SHA1(reinterpret_cast<const unsigned char*>(contents.data()), contents.size(), out);
+        SHA1(in, sizeof(in)-1, out);
         std::cout << out << "\n";
         std::string hash(reinterpret_cast<char*>(out));
         std::cout<<hash;
