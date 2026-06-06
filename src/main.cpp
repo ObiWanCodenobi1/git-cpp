@@ -191,12 +191,12 @@ int main(int argc, char *argv[])
         std::cout << contents << "\n";
         for(int i = 0; i < 6+(std::to_string(contents.size())).size()+contents.size() ; i++) std::cout << in[i];
         std::cout << "\n";
-        unsigned char out[40];
+        unsigned char out[20];
 
         SHA1(in, sizeof(in)-1, out);
         std::cout << out << "\n";
-        char out_string[81];
-        for(int i = 0; i < 81; ++i){  
+        char out_string[41];
+        for(int i = 0; i < 41; ++i){  
             sprintf(&out_string[i*2], "%02x", (unsigned int)out[i]);  
         }
 
