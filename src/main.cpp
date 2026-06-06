@@ -210,7 +210,7 @@ int main(int argc, char *argv[])
            std::FILE* output_file;
            std::string output_path = "./.git/objects/" + hash.substr(0,2) + "/" + hash.substr(2);
 
-           output_file = fopen(output_path.c_str(),"w");
+           output_file = fopen(output_path.c_str(),"wb");
 
            if(output_file == NULL){
             std::cerr<<"Could not create file";
