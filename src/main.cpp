@@ -225,6 +225,34 @@ int main(int argc, char *argv[])
 
         fclose(input_file);
     }
+    else if(command == "ls-tree"){
+        std::string mode = argv[2];
+        if (mode != "--name-only") {
+            std::cerr << mode << '\n';  
+            return EXIT_FAILURE;
+        }
+        std::string blob_sha = argv[3];
+
+        std::filesystem::path file_path = "./.git/objects/" + blob_sha.substr(0,2) + "/" + blob_sha.substr(2);
+
+        if (!exists(file_path)) {
+            std::cerr << "Object not found.\n";
+            return EXIT_FAILURE;
+        }
+
+        std::ifstream catfile(file_path);
+        std::string compressed="",line;
+
+        while(getline(catfile,line)){
+            compressed += line;
+        }
+
+        catfile.close();
+
+        std::string decompressed = decompress(compressed);
+        std::cout<<decompressed;
+
+    }
     else {
         std::cerr << "Unknown command " << command << '\n';
         return EXIT_FAILURE;
