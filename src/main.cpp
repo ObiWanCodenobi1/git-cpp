@@ -250,6 +250,7 @@ int main(int argc, char *argv[])
         catfile.close();
 
         std::string decompressed = decompress(compressed);
+        std::cout<<decompressed;
 
         int idx = decompressed.find('\0');
         idx++;
