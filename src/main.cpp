@@ -240,7 +240,7 @@ int main(int argc, char *argv[])
             return EXIT_FAILURE;
         }
 
-        std::ifstream catfile(file_path,ios::binary);
+        std::ifstream catfile(file_path);
         std::string compressed="",line;
 
         while(getline(catfile,line)){
