@@ -240,7 +240,7 @@ int main(int argc, char *argv[])
             return EXIT_FAILURE;
         }
 
-        std::ifstream catfile(file_path);
+        std::ifstream catfile(file_path,std::ios::binary);
         std::string compressed="",line;
 
         while(getline(catfile,line)){
@@ -250,6 +250,7 @@ int main(int argc, char *argv[])
         catfile.close();
 
         std::string decompressed = decompress(compressed);
+        //std::cout<<decompressed;
 
         int idx = decompressed.find('\0');
         idx++;
