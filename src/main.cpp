@@ -252,6 +252,22 @@ int main(int argc, char *argv[])
         std::string decompressed = decompress(compressed);
         std::cout<<decompressed;
 
+        int idx = decompressed.find('\0');
+        idx++;
+
+        while(idx<decompressed.size()){
+            int space_idx = decompressed.find(' ',idx);
+            if (space_idx == std::string::npos) break;
+
+            int null_idx = decompressed.find('\0',space_idx);
+            if (null_idx == std::string::npos) break;
+
+            std::string name = decompressed.substr(space_idx + 1, null_idx - space_idx - 1);
+            std::cout << name << "\n";
+
+            idx = null_idx + 1 + 20;
+        }
+
     }
     else {
         std::cerr << "Unknown command " << command << '\n';
