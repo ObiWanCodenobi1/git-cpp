@@ -82,6 +82,21 @@ int def(FILE *source, FILE *dest, int level){
     return Z_OK;
 }
 
+std::string cat_file(std::filesystem::path path){
+    std::ifstream catfile(file_path);
+        std::string compressed="",line;
+
+        while(getline(catfile,line)){
+            compressed += line;
+        }
+
+        catfile.close();
+
+        std::string decompressed = decompress(compressed);
+
+        return decompressed;
+}
+
 int main(int argc, char *argv[])
 {
     // Flush after every std::cout / std::cerr
@@ -136,16 +151,18 @@ int main(int argc, char *argv[])
             return EXIT_FAILURE;
         }
 
-        std::ifstream catfile(file_path);
-        std::string compressed="",line;
+        // std::ifstream catfile(file_path);
+        // std::string compressed="",line;
 
-        while(getline(catfile,line)){
-            compressed += line;
-        }
+        // while(getline(catfile,line)){
+        //     compressed += line;
+        // }
 
-        catfile.close();
+        // catfile.close();
 
-        std::string decompressed = decompress(compressed);
+        // std::string decompressed = decompress(compressed);
+
+        std::string decompressed = cat_file(file_path);
 
         int idx = decompressed.find('\0');
         std::cout << decompressed.substr(idx+1);
@@ -268,6 +285,9 @@ int main(int argc, char *argv[])
             idx = null_idx + 1 + 20;
         }
 
+    }
+    else if(command=="write-tree"){
+        
     }
     else {
         std::cerr << "Unknown command " << command << '\n';
