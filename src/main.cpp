@@ -82,7 +82,7 @@ int def(FILE *source, FILE *dest, int level){
     return Z_OK;
 }
 
-std::string cat_file(std::filesystem::path path){
+std::string cat_file(std::filesystem::path file_path){
     std::ifstream catfile(file_path);
     std::string compressed="",line;
 
