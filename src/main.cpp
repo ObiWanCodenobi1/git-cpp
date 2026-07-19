@@ -84,17 +84,17 @@ int def(FILE *source, FILE *dest, int level){
 
 std::string cat_file(std::filesystem::path path){
     std::ifstream catfile(file_path);
-        std::string compressed="",line;
+    std::string compressed="",line;
 
-        while(getline(catfile,line)){
-            compressed += line;
-        }
+    while(getline(catfile,line)){
+        compressed += line;
+    }
 
-        catfile.close();
+    catfile.close();
 
-        std::string decompressed = decompress(compressed);
+    std::string decompressed = decompress(compressed);
 
-        return decompressed;
+    return decompressed;
 }
 
 int main(int argc, char *argv[])
