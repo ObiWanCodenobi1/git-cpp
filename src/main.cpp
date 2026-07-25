@@ -97,6 +97,7 @@ std::string cat_file(std::filesystem::path file_path){
     return decompressed;
 }
 
+
 int main(int argc, char *argv[])
 {
     // Flush after every std::cout / std::cerr
@@ -171,14 +172,16 @@ int main(int argc, char *argv[])
     else if(command=="hash-object"){
         std::string mode = argv[2];
         std::string file;
+        bool iswrite = false;
 
         if(mode=="-w"){
             file = argv[3];
+            iswrite=true;
         }
         else file = mode;
         
         std::string file_path = "./" + file;
-
+        
         std::FILE *input_file;
         input_file = fopen(file_path.c_str(), "r+");
 
@@ -213,11 +216,11 @@ int main(int argc, char *argv[])
             sprintf(&out_string[i*2], "%02x", (unsigned int)out[i]);  
         }
         out_string[40]='\0';
-
+        
         std::string hash = out_string;
         std::cout << hash << "\n";
          
-
+        
         if(mode=="-w"){
            std::filesystem::create_directory("./.git/objects/" + hash.substr(0,2));
 
@@ -241,6 +244,7 @@ int main(int argc, char *argv[])
         }
 
         fclose(input_file);
+        
     }
     else if(command == "ls-tree"){
         std::string mode = argv[2];
